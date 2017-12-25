@@ -12,11 +12,11 @@
 - `npm install` to install the dependencies.
 - `npm start` to start the application.
 
-Or, download latest release [here](/releases/latest).
+Or, download latest release [here](https://github.com/NoobTW/NoMiningHosts/releases/latest).
 
 ## Downloads
 
-Download latest release [here](/releases/latest).
+Download latest release [here](https://github.com/NoobTW/NoMiningHosts/releases/latest).
 
 ## Credit
 
