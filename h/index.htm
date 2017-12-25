@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>No Mining Hosts!</title>
+	<link rel="stylesheet" href="css/normalize.css">
+	<link rel="stylesheet" href="css/style.css">
+	<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/fontawesome-all.min.js"></script>
+	<script>if (window.module) module = window.module;</script>
+</head>
+<body class="noselect">
+	<header>
+		<h1>No Mining Hosts v0.2</h1>
+		<div class="status"><i class="fas fa-exclamation-triangle"></i> 需要防護</div>
+	</header>
+	<div class="wrapper">
+		<div class="group">
+			<div class="group-title">啟用黑名單</div>
+			<div class="list" id="list-nocoin">
+				<div class="listName">NoCoin 黑名單</div>
+				<div class="listStatus" data-name="nocoin"><i class="fas fa-spinner fa-spin"></i></div>
+			</div>
+			<div class="list" id="list-minerblock">
+				<div class="listName">MinerBlock 黑名單</div>
+				<div class="listStatus" data-name="minerblock"><i class="fas fa-spinner fa-spin"></i></div>
+			</div>
+			<div class="list" id="list-aw">
+				<div class="listName">Anti-WebMiner 黑名單</div>
+				<div class="listStatus" data-name="aw"><i class="fas fa-spinner fa-spin"></i></div>
+			</div>
+		</div>
+		<div class="group">
+			<div class="group-title">備份 hosts</div>
+			<div class="list" id="backup">
+				<div class="listName">
+					備份 hosts 檔案
+				</div>
+				<div class="listDesc">上次備份：無</div>
+			</div>
+			<div class="list disabled" id="restore">
+				<div class="listName">
+					還原 hosts 檔案
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer>
+		By TN-Man, NoobTW 2017
+	</footer>
+	<script defer src="js/all.js"></script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+.noselect {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+body, html {
+	margin: 0px;
+	padding: 0px;
+}
+
+body{
+	margin-top: -24px;
+	font-family: '微軟正黑體', sans-serif;
+	cursor: default;
+}
+
+header{
+	padding: 1rem;
+	background: #F44336;
+	margin: 0;
+	color: white;
+}
+
+header h1{
+	font-size: 1.4rem;
+	line-height: 1.8rem;
+}
+
+.group-title{
+	padding: 1rem 1rem .2rem .2rem;
+	font-size: .9rem;
+	color: #333;
+	border-bottom: 1px solid #f2f2f2;
+}
+
+.list{
+	padding: .5rem;
+}
+
+.list:hover{
+	background: #e3e3e3;
+}
+
+.listName{
+	font-size: 1.1rem;
+	line-height: 2rem;
+	vertical-align: top;
+	display: inline-block;
+	width: 80%;
+}
+
+.listStatus{
+	font-size: 2rem;
+	display: inline-block;
+	text-align: right;
+	width: 18%;
+}
+
+.listDesc{
+	color: #343434;
+	font-size: .7rem;
+}
+
+.disabled{
+	color: #aaa;
+}
+
+footer{
+	position: fixed;
+	width: 100%;
+	bottom: 0;
+	left: 0;
+	font-size: .7rem;
+	color: #333;
+	border-top: 1px solid #e3e3e3;
+	padding: .5rem;
+}
