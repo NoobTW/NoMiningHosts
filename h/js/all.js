@@ -1,6 +1,7 @@
 const axios = require('axios');
 const moment = require('moment');
 const electron = require('electron');
+const sudo = require('sudo-prompt');
 const fs = electron.remote.require('fs');
 const os = electron.remote.require('os');
 const exec = electron.remote.require('child_process').exec;
@@ -14,15 +15,16 @@ const isFound = {
 
 const BACKUP_PATH = `${os.homedir()}\\AppData\\Local\\NoMiningHosts.backup`;
 const ORIG_HOSTS_PATH = 'C:\\Windows\\System32\\drivers\\etc\\hosts';
+const TEMP_PATH = `C:\\Windows\\Temp\\hosts.backup${Math.random()}.tmp`;
 
 $(() => {
 
-	exec('NET SESSION', (err, so, se) => {
-		if(se.length !== 0){
-			alert('請使用系統管理員身分執行！', ' ');
-			electron.remote.app.exit();
-		}
-	});
+	// exec('NET SESSION', (err, so, se) => {
+	// 	if(se.length !== 0){
+	// 		alert('請使用系統管理員身分執行！', ' ');
+	// 		electron.remote.app.exit();
+	// 	}
+	// });
 
 	const t = fs.existsSync(BACKUP_PATH) ? fs.statSync(BACKUP_PATH) : null;
 	if(t){
@@ -103,8 +105,11 @@ $(() => {
 	$('#restore').on('click', () => {
 		if(!$(this).hasClass('disabled')){
 			fs.createReadStream(BACKUP_PATH)
-			.pipe(fs.createWriteStream(ORIG_HOSTS_PATH));
-			alert('還原完成！', ' ');
+			.pipe(fs.createWriteStream(TEMP_PATH));
+			sudo.exec(`move ${TEMP_PATH} ${ORIG_HOSTS_PATH}`, {name: 'No Mining Hosts'}, (err) => {
+				console.log(err);
+				alert('還原完成！', ' ');
+			});
 		}
 	});
 });
@@ -129,10 +134,21 @@ const modifyHosts = (name, toggle) => {
 				content += `127.0.0.1\t${domain}\t# NoMiningHosts ${name}\r\n`;
 			});
 			// content = content.slice(0, -2);
-			fs.writeFileSync(ORIG_HOSTS_PATH, content, 'utf-8');
+			fs.writeFileSync(TEMP_PATH, content, 'utf-8');
+			sudo.exec(`move ${TEMP_PATH} ${ORIG_HOSTS_PATH}`, {name: 'No Mining Hosts'}, (err) => {
+				if(!err){
+					isFound[name] = true;
+					$('#list-'+name+' .listStatus').html('<i class="fas toggler fa-toggle-on"></i>');
+					if(isFound.nocoin !== false || isFound.minerblock !== false || isFound.aw !== false){
+						$('header').css('background', '#43A047');
+						$('header .status').html('<i class="fas fa-check-circle"></i> 已受保護');
+					}else{
+						$('header').css('background', '#F44336');
+						$('header .status').html('<i class="fas fa-exclamation-triangle"></i> 需要防護');
+					}
+				}
+			})
 		}
-		isFound[name] = true;
-		$('#list-'+name+' .listStatus').html('<i class="fas toggler fa-toggle-on"></i>');
 	}else{
 		let content = fs.readFileSync(ORIG_HOSTS_PATH, 'utf-8');
 		let newContent = '';
@@ -140,15 +156,19 @@ const modifyHosts = (name, toggle) => {
 			if(!line.includes(`NoMiningHosts ${name}`)) newContent += `${line.trim()}\r\n`;
 		});
 		newContent = newContent.slice(0, -2);
-		fs.writeFileSync(ORIG_HOSTS_PATH, newContent, 'utf-8');
-		isFound[name] = false;
-		$('#list-'+name+' .listStatus').html('<i class="fas toggler fa-toggle-off"></i>');
-	}
-	if(isFound.nocoin !== false || isFound.minerblock !== false || isFound.aw !== false){
-		$('header').css('background', '#43A047');
-		$('header .status').html('<i class="fas fa-check-circle"></i> 已受保護');
-	}else{
-		$('header').css('background', '#F44336');
-		$('header .status').html('<i class="fas fa-exclamation-triangle"></i> 需要防護');
+		fs.writeFileSync(TEMP_PATH, newContent, 'utf-8');
+		sudo.exec(`move ${TEMP_PATH} ${ORIG_HOSTS_PATH}`, {name: 'No Mining Hosts'}, (err) => {
+			if(!err){
+				isFound[name] = false;
+				$('#list-'+name+' .listStatus').html('<i class="fas toggler fa-toggle-off"></i>');
+				if(isFound.nocoin !== false || isFound.minerblock !== false || isFound.aw !== false){
+					$('header').css('background', '#43A047');
+					$('header .status').html('<i class="fas fa-check-circle"></i> 已受保護');
+				}else{
+					$('header').css('background', '#F44336');
+					$('header .status').html('<i class="fas fa-exclamation-triangle"></i> 需要防護');
+				}
+			}
+		});
 	}
 }

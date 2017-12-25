@@ -1,6 +1,6 @@
 {
   "name": "nomininghosts",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A tool stopping mining.",
   "main": "main.js",
   "build": {
@@ -27,7 +27,8 @@
   "homepage": "https://github.com/NoobTW/NoMiningHosts#readme",
   "dependencies": {
     "axios": "^0.17.1",
-    "moment": "^2.20.1"
+    "moment": "^2.20.1",
+    "sudo-prompt": "^8.0.0"
   },
   "devDependencies": {
     "electron": "^1.7.10"
